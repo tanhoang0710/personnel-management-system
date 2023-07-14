@@ -11,8 +11,12 @@ import { SignInDto } from './dto/sign-in.dto';
 import { JwtAccessTokenGuard } from './guards/jwtAccessToken.guard';
 import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id.decorator';
 import { JwtRefreshTokenGuard } from './guards/jwtRefreshToken.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { ROLES } from 'src/common/enums/roles.enum';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -25,15 +29,22 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAccessTokenGuard)
-  // @ApiBearerAuth('access-token')
+  @ApiBearerAuth('access-token')
   async logout(@GetCurrentUserId() userId: number) {
     return await this.authService.logout(userId);
   }
 
   @Post('refresh')
   @UseGuards(JwtRefreshTokenGuard)
-  // @ApiBearerAuth('refresh-token')
+  @ApiBearerAuth('refresh-token')
+  @HttpCode(HttpStatus.OK)
   async refreshAccessToken(@GetCurrentUserId() userId: number) {
     return await this.authService.getNewAccessToken(userId);
+  }
+
+  @Post('sign-up')
+  @Roles(ROLES.ADMIN)
+  async signUp() {
+    return 123;
   }
 }

@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { RoleModule } from './role/role.module';
+import { PermissionModule } from './permission/permission.module';
+import { AccessControllModule } from './access-controll/access-controll.module';
 
 @Module({
   imports: [
@@ -13,6 +16,9 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
     AuthModule,
     UserModule,
+    RoleModule,
+    PermissionModule,
+    AccessControllModule,
   ],
   controllers: [AppController],
   providers: [AppService],

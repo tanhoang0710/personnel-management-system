@@ -6,9 +6,15 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/user/user.module';
+import { AccessControllModule } from 'src/access-controll/access-controll.module';
 
 @Module({
-  imports: [JwtModule.register({}), PassportModule, UserModule],
+  imports: [
+    JwtModule.register({}),
+    PassportModule,
+    UserModule,
+    AccessControllModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, JwtAccessTokenStrategy, JwtRefreshTokenStrategy],
 })

@@ -1,7 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SignUpDto } from 'src/auth/dto/sign-up.dto';
 
 @Injectable()
 export class UserService {
@@ -29,6 +30,21 @@ export class UserService {
       return false;
     } catch (error) {
       throw new HttpException(error?.message, 500);
+    }
+  }
+
+  async createOne(signUpDto: SignUpDto) {
+    const dependant = await this.findOne({
+      id: signUpDto.dependantId,
+    });
+    try {
+      const newUser = await this.userRepository.save({
+        ...signUpDto,
+        dependant,
+      });
+      return newUser;
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }

@@ -8,6 +8,6 @@ export class SignInDto {
   employeeCode: string;
 
   @IsNotEmpty()
-  @ApiProperty({ example: 'Tanhun123@' })
+  @ApiProperty({ example: '123456' })
   password: string;
 }

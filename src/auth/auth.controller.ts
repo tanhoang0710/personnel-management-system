@@ -14,6 +14,8 @@ import { JwtRefreshTokenGuard } from './guards/jwtRefreshToken.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ROLES } from 'src/common/enums/roles.enum';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -44,7 +46,10 @@ export class AuthController {
 
   @Post('sign-up')
   @Roles(ROLES.ADMIN)
-  async signUp() {
-    return 123;
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  async signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
   }
 }

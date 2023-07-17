@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { configSwagger } from './config/api-docs.config';
 
 async function bootstrap() {
@@ -12,6 +12,7 @@ async function bootstrap() {
       skipMissingProperties: false,
     }),
   );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   configSwagger(app);
   await app.listen(3000);
 }

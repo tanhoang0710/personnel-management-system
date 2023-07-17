@@ -1,5 +1,13 @@
+import { AccessControll } from 'src/access-controll/entities/access-controll.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -27,13 +35,21 @@ export class User extends BaseEntity {
   @Column({ length: 255 })
   address: string;
 
-  @OneToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn()
   dependant: User;
+
+  @OneToMany(() => User, (user) => user.dependant)
+  dependants: User[];
 
   @Column()
   password: string;
 
   @Column({ default: null, nullable: true })
   refreshToken: string;
+
+  @OneToMany(() => AccessControll, (accessControll) => accessControll.user, {
+    cascade: true,
+  })
+  accessControlls: AccessControll[];
 }

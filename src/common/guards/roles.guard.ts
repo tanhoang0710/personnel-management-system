@@ -8,12 +8,14 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { UserService } from 'src/user/user.service';
 import { ROLES } from '../enums/roles.enum';
+import { AccessControllService } from 'src/access-controll/access-controll.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly userService: UserService,
+    private readonly accessControllService: AccessControllService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -21,6 +23,7 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (!requiredRoles) {
       return true;
     }
@@ -32,10 +35,17 @@ export class RolesGuard implements CanActivate {
 
     if (!userInDB) throw new BadRequestException('User have been deleted!');
 
-    // return requiredRoles.some((role) => {
-    //   return userInDB.role?.includes(role);
-    // });
+    const roles = await this.accessControllService.findAll({
+      user: userInDB,
+    });
 
-    return true;
+    for (let i = 0; i < requiredRoles.length; i++) {
+      for (let j = 0; j < roles.length; j++) {
+        console.log(requiredRoles[i], roles[j].role.name);
+        if (requiredRoles[i] === roles[j].role.name) return true;
+      }
+    }
+
+    return false;
   }
 }

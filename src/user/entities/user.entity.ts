@@ -1,13 +1,6 @@
 import { AccessControll } from 'src/access-controll/entities/access-controll.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User extends BaseEntity {

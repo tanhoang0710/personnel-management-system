@@ -3,6 +3,7 @@ import { User } from './entities/user.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignUpDto } from 'src/auth/dto/sign-up.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -46,5 +47,24 @@ export class UserService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async updateProfile(
+    updateProfileDto: UpdateProfileDto,
+    id: number,
+  ): Promise<boolean> {
+    const result = await this.userRepository.update(id, updateProfileDto);
+
+    if (result.affected === 1) return true;
+    return false;
+  }
+
+  async updateAvatar(url: string, id: number): Promise<string> {
+    const result = await this.userRepository.update(id, {
+      avatar: url,
+    });
+
+    if (result.affected === 1) return url;
+    return null;
   }
 }

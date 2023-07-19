@@ -3,7 +3,7 @@ import { STATUS } from 'src/common/enums/status.enum';
 import { Form } from 'src/form/entities/form.entity';
 import { UserFormDetail } from 'src/user-form-detail/entities/user-form-detail.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('userForms')
 export class UserForm extends BaseEntity {
@@ -26,6 +26,12 @@ export class UserForm extends BaseEntity {
   })
   status: STATUS;
 
-  @OneToOne(() => UserFormDetail, (userFormDetail) => userFormDetail.userForm)
-  userFormDetail: UserFormDetail;
+  @OneToMany(
+    () => UserFormDetail,
+    (userFormDetail) => userFormDetail.userForm,
+    {
+      cascade: true,
+    },
+  )
+  userFormDetails: UserFormDetail[];
 }

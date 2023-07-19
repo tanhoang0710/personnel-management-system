@@ -12,7 +12,6 @@ import {
   ParseFilePipe,
   ParseIntPipe,
   Put,
-  Req,
   Res,
   UploadedFile,
   UseGuards,
@@ -32,7 +31,6 @@ import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
-import { Request } from 'express';
 
 @Controller('users')
 @ApiTags('users')

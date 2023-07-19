@@ -1,5 +1,6 @@
 import { AccessControll } from 'src/access-controll/entities/access-controll.entity';
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { UserForm } from 'src/user-form/entities/user-form.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('users')
@@ -45,4 +46,9 @@ export class User extends BaseEntity {
     cascade: true,
   })
   accessControlls: AccessControll[];
+
+  @OneToMany(() => UserForm, (userForm) => userForm.user, {
+    cascade: true,
+  })
+  userForms: UserForm[];
 }

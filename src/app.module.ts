@@ -9,6 +9,10 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AccessControllModule } from './access-controll/access-controll.module';
+import { UserFormModule } from './user-form/user-form.module';
+import { FormModule } from './form/form.module';
+import { FormCategoryModule } from './form-category/form-category.module';
+import { UserFormDetailModule } from './user-form-detail/user-form-detail.module';
 
 @Module({
   imports: [
@@ -19,6 +23,10 @@ import { AccessControllModule } from './access-controll/access-controll.module';
     RoleModule,
     PermissionModule,
     AccessControllModule,
+    UserFormModule,
+    FormModule,
+    FormCategoryModule,
+    UserFormDetailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

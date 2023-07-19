@@ -4,7 +4,7 @@ import { Role } from 'src/role/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Entity, ManyToOne } from 'typeorm';
 
-@Entity('accessControll')
+@Entity('accessControlls')
 export class AccessControll extends BaseEntity {
   @ManyToOne(() => User, (user) => user.accessControlls)
   user: User;

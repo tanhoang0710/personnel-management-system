@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { AccessControll } from './entities/access-controll.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateAccessControllDto } from './dto/create-access-controll.dto';
 
 @Injectable()
 export class AccessControllService {
@@ -30,5 +31,24 @@ export class AccessControllService {
         },
       },
     });
+  }
+
+  async createOne(createAccessControllDto: CreateAccessControllDto) {
+    try {
+      const newRecord = await this.accessControllRepository.save({
+        user: {
+          id: createAccessControllDto.userId,
+        },
+        role: {
+          id: createAccessControllDto.roleId,
+        },
+        permission: {
+          id: createAccessControllDto.permissionId,
+        },
+      });
+      return newRecord;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

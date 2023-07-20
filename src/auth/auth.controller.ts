@@ -44,12 +44,39 @@ export class AuthController {
     return await this.authService.getNewAccessToken(userId);
   }
 
-  @Post('sign-up')
+  @Post('sign-up/employee')
   @Roles(ROLES.ADMIN)
   @UseGuards(RolesGuard)
   @UseGuards(JwtAccessTokenGuard)
   @ApiBearerAuth('access-token')
-  async signUp(@Body() signUpDto: SignUpDto) {
-    return this.authService.signUp(signUpDto);
+  async signUpEmployee(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUpEmployee(signUpDto);
+  }
+
+  @Post('sign-up/manager')
+  @Roles(ROLES.ADMIN)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  async signUpManager(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUpManager(signUpDto);
+  }
+
+  @Post('sign-up/hr')
+  @Roles(ROLES.ADMIN)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  async signUpHr(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUpHr(signUpDto);
+  }
+
+  @Post('sign-up/director')
+  @Roles(ROLES.ADMIN)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  async signUpDirector(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUpDirector(signUpDto);
   }
 }

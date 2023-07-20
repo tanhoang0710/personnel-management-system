@@ -10,6 +10,7 @@ import { SignInDto } from './dto/sign-in.dto';
 import { UserService } from 'src/user/user.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { User } from 'src/user/entities/user.entity';
+import { AccessControllService } from 'src/access-controll/access-controll.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
+    private readonly accessControllService: AccessControllService,
   ) {}
   async getTokens(
     userId: number,
@@ -84,8 +86,96 @@ export class AuthService {
     return { accessToken: newAccessToken };
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<User> {
+  async signUpEmployee(signUpDto: SignUpDto): Promise<User> {
     const newUser = await this.userService.createOne(signUpDto);
+    await Promise.all([
+      this.accessControllService.createOne({
+        roleId: 5,
+        permissionId: 1,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 5,
+        permissionId: 3,
+        userId: newUser.id,
+      }),
+    ]);
+    return newUser;
+  }
+
+  async signUpManager(signUpDto: SignUpDto): Promise<User> {
+    const newUser = await this.userService.createOne(signUpDto);
+    await Promise.all([
+      this.accessControllService.createOne({
+        roleId: 4,
+        permissionId: 1,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 4,
+        permissionId: 3,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 4,
+        permissionId: 5,
+        userId: newUser.id,
+      }),
+    ]);
+    return newUser;
+  }
+
+  async signUpHr(signUpDto: SignUpDto): Promise<User> {
+    const newUser = await this.userService.createOne(signUpDto);
+    await Promise.all([
+      this.accessControllService.createOne({
+        roleId: 3,
+        permissionId: 1,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 3,
+        permissionId: 2,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 3,
+        permissionId: 3,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 3,
+        permissionId: 5,
+        userId: newUser.id,
+      }),
+    ]);
+    return newUser;
+  }
+
+  async signUpDirector(signUpDto: SignUpDto): Promise<User> {
+    const newUser = await this.userService.createOne(signUpDto);
+    await Promise.all([
+      this.accessControllService.createOne({
+        roleId: 2,
+        permissionId: 1,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 2,
+        permissionId: 2,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 2,
+        permissionId: 3,
+        userId: newUser.id,
+      }),
+      this.accessControllService.createOne({
+        roleId: 2,
+        permissionId: 5,
+        userId: newUser.id,
+      }),
+    ]);
     return newUser;
   }
 }

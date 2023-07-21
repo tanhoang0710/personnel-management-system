@@ -9,6 +9,7 @@ export class FormCategory extends BaseEntity {
     type: 'enum',
     enum: FORM_CATEGORIES,
     default: FORM_CATEGORIES.PROBATIONARY_FORM,
+    unique: true,
   })
   name: FORM_CATEGORIES;
 

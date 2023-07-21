@@ -41,7 +41,6 @@ export class RolesGuard implements CanActivate {
 
     for (let i = 0; i < requiredRoles.length; i++) {
       for (let j = 0; j < roles.length; j++) {
-        console.log(requiredRoles[i], roles[j].role.name);
         if (requiredRoles[i] === roles[j].role.name) return true;
       }
     }

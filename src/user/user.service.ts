@@ -67,4 +67,14 @@ export class UserService {
     if (result.affected === 1) return url;
     return null;
   }
+
+  async findEmployeeOfASpecificManager(managerId: number) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .select('user.id')
+      .where('user.dependantId = :dependantId', {
+        dependantId: managerId,
+      })
+      .getMany();
+  }
 }

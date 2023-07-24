@@ -33,6 +33,17 @@ export class AccessControllService {
     });
   }
 
+  async findUserRoles(userId: number) {
+    return await this.accessControllRepository.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: ['role'],
+    });
+  }
+
   async createOne(createAccessControllDto: CreateAccessControllDto) {
     try {
       const newRecord = await this.accessControllRepository.save({

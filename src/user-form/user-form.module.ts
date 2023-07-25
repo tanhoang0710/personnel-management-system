@@ -14,5 +14,6 @@ import { UserModule } from 'src/user/user.module';
   ],
   controllers: [UserFormController],
   providers: [UserFormService],
+  exports: [UserFormService],
 })
 export class UserFormModule {}

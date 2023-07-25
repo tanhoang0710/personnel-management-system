@@ -14,7 +14,6 @@ export class UserIsUserOrHrOrManagerOfThatUserGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log(123);
     let hasUserIsUserPermission = false;
     let hasManagerOfThatUserPermission = false;
     let hasHRPermission = false;

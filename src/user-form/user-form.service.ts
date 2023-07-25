@@ -1,3 +1,4 @@
+import { UpdateUserFormByManagerDto } from './dto/update-user-form-by-manager.dto';
 import {
   BadRequestException,
   Injectable,
@@ -15,6 +16,8 @@ import {
 import { UserService } from 'src/user/user.service';
 import { AccessControllService } from 'src/access-controll/access-controll.service';
 import { ROLES } from 'src/common/enums/roles.enum';
+import { UpdateUserFormByEmployeeDto } from './dto/update-user-form-by-employee.dto';
+import { UpdateUserFormByHrDto } from './dto/update-user-form-by-hr.dto';
 
 @Injectable()
 export class UserFormService {
@@ -103,7 +106,21 @@ export class UserFormService {
       relations: {
         form: true,
         user: true,
+        userFormDetails: true,
       },
     });
+  }
+
+  async updateOne(
+    id: number,
+    updateDto:
+      | UpdateUserFormByEmployeeDto
+      | UpdateUserFormByManagerDto
+      | UpdateUserFormByHrDto,
+  ) {
+    const result = await this.userFormRepository.update(id, updateDto);
+
+    if (result.affected === 1) return true;
+    return false;
   }
 }

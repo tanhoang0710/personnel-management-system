@@ -3,9 +3,12 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +25,10 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { UserForm } from './entities/user-form.entity';
 import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id.decorator';
 import { UserIsUserOrHrOrManagerOfThatUserGuard } from 'src/common/guards/userIsUserOrHrOrMangerOfThatUser.guard';
+import { UpdateUserFormByManagerDto } from './dto/update-user-form-by-manager.dto';
+import { UpdateUserFormByEmployeeDto } from './dto/update-user-form-by-employee.dto';
+import { UserIsUserFormOwnerGuard } from 'src/common/guards/userIsUserFormOwner.guard';
+import { UpdateUserFormByHrDto } from './dto/update-user-form-by-hr.dto';
 
 @Controller('user-forms')
 @ApiTags('user-forms')
@@ -82,5 +89,65 @@ export class UserFormController {
   @ApiBearerAuth('access-token')
   async getOneUserForm(@Param('id', ParseIntPipe) id: number) {
     return await this.userFormService.getOne(id);
+  }
+
+  @Put(':id/manager-update')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Roles(ROLES.HR)
+  @Permissions(PERMISSIONS.UPDATE)
+  @UseGuards(UserIsUserOrHrOrManagerOfThatUserGuard)
+  @UseGuards(PermissionsGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  @ApiParam({
+    name: 'id',
+    example: 1,
+  })
+  async updateByManager(
+    @Body() updateUserFormByManagerDto: UpdateUserFormByManagerDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userFormService.updateOne(id, updateUserFormByManagerDto);
+  }
+
+  @Put(':id/hr-update')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Roles(ROLES.HR)
+  @Permissions(PERMISSIONS.UPDATE)
+  @UseGuards(UserIsUserOrHrOrManagerOfThatUserGuard)
+  @UseGuards(PermissionsGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  @ApiParam({
+    name: 'id',
+    example: 1,
+  })
+  async updateByHr(
+    @Body() updateUserFormByHrDto: UpdateUserFormByHrDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userFormService.updateOne(id, updateUserFormByHrDto);
+  }
+
+  @Put(':id/employee-update')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Roles(ROLES.EMPLOYEE)
+  @Permissions(PERMISSIONS.UPDATE)
+  @UseGuards(UserIsUserFormOwnerGuard)
+  @UseGuards(PermissionsGuard)
+  @UseGuards(JwtAccessTokenGuard)
+  @ApiBearerAuth('access-token')
+  @ApiParam({
+    name: 'id',
+    example: 1,
+  })
+  async updateByUser(
+    @Body() updateUserFormByEmployeeDto: UpdateUserFormByEmployeeDto,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.userFormService.updateOne(
+      id,
+      updateUserFormByEmployeeDto,
+    );
   }
 }

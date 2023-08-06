@@ -16,6 +16,7 @@ export default class TypeOrmConfig {
       synchronize: true, // prod ko nen lam, vi se mat du lieu
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       charset: 'utf8mb4_unicode_ci',
+      // logging: true,
     };
   }
 }

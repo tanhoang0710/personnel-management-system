@@ -13,6 +13,7 @@ import { UserFormModule } from './user-form/user-form.module';
 import { FormModule } from './form/form.module';
 import { FormCategoryModule } from './form-category/form-category.module';
 import { UserFormDetailModule } from './user-form-detail/user-form-detail.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserFormDetailModule } from './user-form-detail/user-form-detail.module
     FormModule,
     FormCategoryModule,
     UserFormDetailModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
